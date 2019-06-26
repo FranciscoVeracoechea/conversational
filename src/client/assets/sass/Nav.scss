@@ -1,0 +1,53 @@
+@import './global';
+
+.navigation {
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: transparent;
+    width: 100%;
+    display: flex;
+    padding: .6em;
+    align-items: center;
+    justify-content: space-between;
+    z-index: $z100;
+
+    .brand {
+        display: flex;
+        align-items: center;
+        .title {
+            font-size: 1.6em;
+            color: $primary;
+            padding-left: .2em;
+        }
+    }
+    ul {
+        padding: 1em;
+        li {
+            list-style: none;
+            display: inline;
+            padding: 1em;
+            margin: .6em;
+            a {
+                color: $secondary;
+            }
+        }
+    }
+    .logo {
+        width: 4em;
+        // animation: App-logo-spin infinite 20s linear;
+
+        // @keyframes App-logo-spin {
+        //     from {
+        //         transform: rotate(0deg);
+        //     }
+        //     to {
+        //         transform: rotate(360deg);
+        //     }
+        // }
+    }
+
+    .active {
+        color: $dark;
+    }
+}
