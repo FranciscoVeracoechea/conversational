@@ -66,7 +66,7 @@
     "file-loader": "^3.0.1",
     "flow-bin": "^0.93.0",
     "mini-css-extract-plugin": "^0.5.0",
-    "open": "0.0.5",
+    "open": "^6.3.0",
     "optimize-css-assets-webpack-plugin": "^5.0.1",
     "react-hot-loader": "^4.11.1",
     "sass": "^1.21.0",
