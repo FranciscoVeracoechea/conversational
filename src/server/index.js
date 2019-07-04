@@ -3,10 +3,14 @@ import express from 'express';
 import path from 'path';
 import dotenv from 'dotenv';
 import helmet from 'helmet';
-import session from 'express-session';
-import connectMongo from 'connect-mongo';
-// database connection
-import mongooseConnection from './db/connection';
+import cors from 'cors';
+import favicon from 'serve-favicon';
+import morgan from 'morgan';
+// configs
+import './configs/dbConnection';
+import passport from './configs/passport';
+import oauth2 from './configs/oauth2';
+import appSetter from './configs/appSetter';
 // middlewares
 import gzip from './middlewares/gzip';
 import errorHandler from './middlewares/errorHandler';
@@ -16,36 +20,33 @@ import ApiRouter from './API';
 
 
 dotenv.config();
-const app = express();
 const isAnalyzer = process.env.ANALYZER === 'true';
 const isDev = process.env.NODE_ENV === 'development';
 
-const MongoStore = connectMongo(session);
+const app = express();
+appSetter(app);
 
-app.set('port', process.env.NODE_PORT || 3333);
-app.set('node_env', process.env.NODE_ENV);
-app.set('browserEnv', {
-  appTitle: process.env.APP_TITLE,
-  appUrl: process.env.APP_URL,
-  facebookId: process.env.FACEBOOK_APP_ID,
-  defaultDescription: process.env.DEFAULT_DESCRIPTION,
-  defaultTwitter: process.env.DEFAULT_TWITTER,
-});
-global.browserEnv = app.get('browserEnv');
-
+app.use(cors());
 app.use(helmet());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../../public')));
-app.use(session({
-  secret: process.env.SECRET,
-  // cookie: { secure: true },
-  saveUninitialized: false,
-  resave: true,
-  store: new MongoStore({ mongooseConnection }),
-}));
 app.use(deviceDetection());
+if (isDev) app.use(morgan('dev'));
+app.use(favicon(path.join(__dirname, 'favicon.ico')));
+app.use('/', express.static(path.join(__dirname, '..', '..', 'public')));
+app.use(passport.initialize());
+app.post('/oauth/token', oauth2(passport));
+app.get(
+  '/api/userInfo',
+  passport.authenticate('bearer', { session: false }),
+  (req, res) => {
+    // req.authInfo is set using the `info` argument supplied by
+    // `BearerStrategy`.  It is typically used to indicate a scope of the token,
+    // and used in access control checks.  For illustrative purposes, this
+    // example simply returns the scope in the response.
+    res.json({ user_id: req.user.userId, name: req.user.username, scope: req.authInfo.scope });
+  }
+);
 ApiRouter(app);
-
 
 if (isDev) {
   import('./webpackDevServer')

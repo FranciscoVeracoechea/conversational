@@ -11,7 +11,7 @@ import {
 import RootComponent from '../shared/RootComponent';
 // Configuroing Store
 import configureStore from '../shared/configureStore';
-import './assets/img/favicon.ico';
+// import './assets/img/favicon.ico';
 
 
 // Create a store and get back itself and its history object

@@ -2,6 +2,8 @@ import React, { useEffect, useState, useRef } from 'react';
 import root from 'window-or-global';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Container from '@material-ui/core/Container';
+import { fromEvent } from 'rxjs';
+import { throttleTime, map, tab } from 'rxjs/operators';
 // Components
 import Page from '../../components/Wrappers/Page';
 // assets
@@ -15,17 +17,16 @@ const Home = () => {
   const layer1 = useRef(null);
   const layer2 = useRef(null);
   const text = useRef(null);
-  const scrollHandler = scroll => () => {
-    setScroll(root?.pageYOffset);
-    layer1.current.style.width = `${100 + scroll / 5}%`;
-    layer2.current.style.width = `${100 + scroll / 5}%`;
-    layer2.current.style.left = `${scroll / 50}%`;
-    text.current.style.top = `-${scroll / 10}%`;
-  };
   useEffect(() => {
-    document.addEventListener('scroll', scrollHandler(scroll));
-    return scrollHandler(scroll);
-  }, [scroll]);
+    const scroll$ = fromEvent(root, 'scroll').subscribe(() => {
+      setScroll(root?.pageYOffset);
+      layer1.current.style.width = `${100 + scroll / 5}%`;
+      layer2.current.style.width = `${100 + scroll / 5}%`;
+      layer2.current.style.left = `${scroll / 50}%`;
+      text.current.style.top = `-${scroll / 10}%`;
+    });
+    return () => scroll$.unsubscribe();
+  }, [scroll, layer1, layer2, text]);
   return (
     <Page>
       <div>
@@ -61,6 +62,13 @@ const Home = () => {
       </div>
     </Page>
   );
-}
+};
+
+// Home.initialAction = (...params) => {
+//   console.log(params);
+//   return {
+//     type: 'adsasdasd',
+//   };
+// };
 
 export default Home;

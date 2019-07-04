@@ -34,7 +34,7 @@ export default (app, { isAnalyzer }) => {
         open(path.join(__dirname, '../../dist/report.html'));
       } else if (execute) {
         process.env.ONCE = 'false';
-        open(`http://localhost:${app.get('port')}`);
+        open(`http://localhost:${app.get('port')}`, { wait: true }).catch(err => console.error(err));;
       }
     });
     app.use(webpackHotMiddleware(compiler.compilers.find(c => c.name === 'client')));

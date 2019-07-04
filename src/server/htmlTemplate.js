@@ -9,7 +9,8 @@ export default ({
   markup,
   state,
   css,
-}) => `<!DOCTYPE html>
+}) => `
+<!DOCTYPE html>
 <html ${helmet.htmlAttributes.toString()}>
   <head>
     <meta charset="UTF-8"/>
@@ -18,9 +19,10 @@ export default ({
     ${helmet.title.toString()}
     ${helmet.meta.toString()}
     ${helmet.link.toString()}
-    <style id="jss-server-side">${css}</style>
+    <style id="jss-server-side" type="text/css">${css}</style>
     <link rel="icon" href="favicon.ico?hash=${hash}">
-    <link rel="stylesheet" href="styles.${hash}.css"/>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <link rel="stylesheet" type="text/css" href="styles.${hash}.css"/>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   </head>
   <body ${helmet.bodyAttributes.toString()}>

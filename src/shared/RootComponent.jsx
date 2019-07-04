@@ -6,7 +6,7 @@ import {
 } from 'react-router-dom';
 import { ThemeProvider } from '@material-ui/styles';
 // theme
-import theme from '../shared/utils/theme';
+import theme from './utils/theme.js';
 // Client App
 import App from '../client/components/App';
 // Routes

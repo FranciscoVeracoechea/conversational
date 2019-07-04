@@ -77,6 +77,7 @@ module.exports = (isDev, type) => ({
       '.jsx',
       '.json',
       '.css',
+      '.svg',
     ],
     modules: [
       'node_modules',

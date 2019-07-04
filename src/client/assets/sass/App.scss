@@ -6,7 +6,7 @@
 
 .zoom {
     width: 100%;
-    height: calc(100vh - #{$NavHeight});
+    height: calc(100vh + #{$NavHeight});
     position: relative;
     overflow: hidden;
     background: url('../img/bg.jpg');

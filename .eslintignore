@@ -1,2 +1,4 @@
 /flow-typed
 /node_modules
+compilationStats.json
+/src/server/commands
