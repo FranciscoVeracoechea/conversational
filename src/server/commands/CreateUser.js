@@ -19,7 +19,6 @@ for (let i = 0; i < (count || 20); i++) {
     password: 'secret',
     email: faker.internet.email(),
     description: faker.lorem.sentences(5),
-    images: [],
   };
 
   const asd = await User.create(fake);

@@ -2,3 +2,4 @@
 /node_modules
 compilationStats.json
 /src/server/commands
+secret.key

@@ -3,7 +3,6 @@ import root from 'window-or-global';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import Container from '@material-ui/core/Container';
 import { fromEvent } from 'rxjs';
-import { throttleTime, map, tab } from 'rxjs/operators';
 // Components
 import Page from '../../components/Wrappers/Page';
 // assets

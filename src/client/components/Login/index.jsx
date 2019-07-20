@@ -17,7 +17,9 @@ import {
 } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // helper
-import { arrayToObject, isArray } from '../../../shared/utils/functional';
+import {
+  arrayToObject, isArray, iif, emailValidator,
+} from '../../../shared/utils/functional';
 
 
 const useStyles = makeStyles(theme => ({
@@ -26,8 +28,8 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-const Register = ({
-  open, onClose, fetchRegister, auth,
+const Login = ({
+  open, onClose, fetchLogin, auth,
 }) => {
   const classes = useStyles();
   const [showPassword, setShowPassword] = useState(false);
@@ -51,7 +53,7 @@ const Register = ({
           map(input => [input.name, input.value]),
           scan(arrayToObject, {}),
           takeLast(1),
-          tap(data => fetchRegister(data)),
+          tap(data => fetchLogin(data)),
         )),
       ),
       inputs$.pipe(
@@ -66,31 +68,20 @@ const Register = ({
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-register-title">
       <form onSubmit={handleOnSubmit}>
-        <DialogTitle id="form-register-title">Register</DialogTitle>
+        <DialogTitle id="form-register-title">Sign In</DialogTitle>
         <DialogContent>
           <DialogContentText>
             To subscribe to this website, please enter your email address, username and password here.
           </DialogContentText>
           <TextField
-            autoFocus
             margin="dense"
-            name="username"
             id="username"
+            name="username"
             label="Username"
             type="text"
             fullWidth
             required
             {...getError('username')}
-          />
-          <TextField
-            margin="dense"
-            id="email"
-            name="email"
-            label="Email Address"
-            type="email"
-            fullWidth
-            required
-            {...getError('email')}
           />
           <TextField
             label="Password"
@@ -123,7 +114,7 @@ const Register = ({
                     Cancel
                   </Button>
                   <Button type="submit" color="primary">
-                    Subscribe
+                    Login
                   </Button>
                 </>
               )
@@ -135,9 +126,9 @@ const Register = ({
   );
 };
 
-Register.propTypes = {
+Login.propTypes = {
   open: PropTypes.bool.isRequired,
   onClose: PropTypes.func.isRequired,
 };
 
-export default Register;
+export default Login;

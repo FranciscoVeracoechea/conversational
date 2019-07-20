@@ -1,9 +1,11 @@
 // @flows
 import {
-  createStore, applyMiddleware, type Store, compose,
+  createStore, applyMiddleware, compose,
 } from 'redux';
 import root from 'window-or-global';
 import { createBrowserHistory, createMemoryHistory } from 'history';
+import { BehaviorSubject } from 'rxjs';
+import { switchMap } from 'rxjs/operators';
 // redux middlewares
 import thunk from 'redux-thunk';
 import { routerMiddleware } from 'connected-react-router';
@@ -14,7 +16,7 @@ import rootEpic from './epics';
 // Reducers
 import rootReducer from './reducers';
 
-// Flow Types
+/* eslint-disable */
 export type Action = {
   type: string,
   payload?: mixed,
@@ -24,27 +26,18 @@ export type ThunkAction = (
   dispatch: (Action) => mixed,
   getState: (void) => {}
 ) => void | mixed;
-
-type ConfigureStoreParams = {
-  location?: string,
-  state?: {},
-  server: boolean,
-};
-
-type ConfigureStoreResponse = {
-  store: Store<{}>,
-  history: {},
-};
-
-/* eslint-disable */
-const composeEnhancers = root.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 /* eslint-enable */
-export default (params: ConfigureStoreParams): ConfigureStoreResponse => {
+
+export default (params) => {
   const {
     location = '',
     state = {},
     server = false,
   } = params;
+
+  const epic$ = new BehaviorSubject(rootEpic);
+  const composeEnhancers = root.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+  const hotReloadingEpic = (...args) => epic$.pipe(switchMap(epic => epic(...args)));
 
   const history = server
     ? createMemoryHistory({
@@ -69,6 +62,13 @@ export default (params: ConfigureStoreParams): ConfigureStoreResponse => {
     ),
     history,
   };
-  epicMiddleware.run(rootEpic);
+  epicMiddleware.run(hotReloadingEpic);
+  if (module.hot) {
+    module.hot.accept('./epics', () => {
+      import('./epics')
+        .then(nextRootEpic => epic$.next(nextRootEpic))
+        .catch(console.error);
+    });
+  }
   return result;
 };

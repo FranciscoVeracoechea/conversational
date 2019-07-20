@@ -7,14 +7,17 @@ import NotificationsIcon from '@material-ui/icons/Notifications';
 import { Tooltip } from '@material-ui/core';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 // components
-import Register from '../Register';
+import Register from '../../containers/RegisterContainer';
+import Login from '../../containers/LoginContainer';
 
 
 const NavBarDesktop = ({
-  classes, menuId, handleProfileMenuOpen, user,
+  classes, menuId, handleProfileMenuOpen, user, logout, push,
 }) => {
   const [showRegister, setShowRegister] = useState(false);
+  const [showLogin, setShowLogin] = useState(false);
   const handleOnShowRegister = value => () => setShowRegister(value);
+  const handleOnShowLogin = value => () => setShowLogin(value)
 
   return (
     <div className={classes.sectionDesktop}>
@@ -41,6 +44,19 @@ const NavBarDesktop = ({
                 color="inherit"
               >
                 <AccountCircle />
+                { user.username }
+              </IconButton>
+              <IconButton
+                edge="end"
+                aria-label="logout"
+                aria-haspopup="true"
+                onClick={() => {
+                  logout();
+                  push('/');
+                }}
+                color="inherit"
+              >
+                <FontAwesomeIcon icon="sign-out-alt" size="sm" />
               </IconButton>
             </>
           )
@@ -70,7 +86,7 @@ const NavBarDesktop = ({
                 </IconButton>
               </Tooltip>
               <Tooltip title="sign in">
-                <IconButton color="secondary" className={classes.icon}>
+                <IconButton color="secondary" className={classes.icon} onClick={handleOnShowLogin(true)}>
                   <FontAwesomeIcon icon="sign-in-alt" size="sm" />
                 </IconButton>
               </Tooltip>
@@ -80,6 +96,10 @@ const NavBarDesktop = ({
       <Register
         open={showRegister}
         onClose={handleOnShowRegister(false)}
+      />
+      <Login
+        open={showLogin}
+        onClose={handleOnShowLogin(false)}
       />
     </div>
   );

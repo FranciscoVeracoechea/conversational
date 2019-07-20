@@ -133,3 +133,13 @@ export const emailValidator = (email) => {
   return validator.test(email);
   /* eslint-enable */
 };
+
+export const newError = (error) => {
+  let e;
+  if (error instanceof Error) e = error;
+  else e = new Error(error);
+  const { message, stack } = e;
+  return (params = {}) => ({
+    ...params, message, stack,
+  });
+};

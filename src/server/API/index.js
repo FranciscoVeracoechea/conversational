@@ -1,6 +1,9 @@
+import passport from 'passport';
 import UserRouter from './UserRouter';
 
 
 export default (app) => {
-  app.use('/api/blog', UserRouter());
+  const requireAuthentication = () => passport.authenticate('jwt', { session: false });
+
+  app.use('/api/user', UserRouter(requireAuthentication));
 };

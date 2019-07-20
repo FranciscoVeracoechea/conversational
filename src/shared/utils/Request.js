@@ -13,7 +13,8 @@ type RequestOptions = {
 const baseUrl = root.browserEnv.appUrl;
 // global headers for all request
 const globalHeaders = {
-  Accept: 'application-json',
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
 };
 
 const isServer = typeof XMLHttpRequest === 'undefined';

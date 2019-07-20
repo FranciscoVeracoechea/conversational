@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { fromEvent } from 'rxjs';
 import { throttleTime, map } from 'rxjs/operators';
 // import { useObservable } from 'rxjs-hooks';
@@ -10,9 +10,9 @@ const HideOnScroll = ({ children }) => {
   const defaultStyles = {
     transition: '.4s all ease',
   };
-  const [lastScroll, setLastScroll] = useState(0);
-  const [styles, setStyles] = useState(defaultStyles);
-  useEffect(() => {
+  const [lastScroll, setLastScroll] = React.useState(0);
+  const [styles, setStyles] = React.useState(defaultStyles);
+  React.useEffect(() => {
     const scroll$ = fromEvent(root, 'scroll').pipe(
       throttleTime(1000),
       map(() => root.pageYOffset || document.documentElement.scrollTop),

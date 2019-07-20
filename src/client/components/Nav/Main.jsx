@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { fade, makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -16,8 +16,6 @@ import Logo from '../../assets/img/logo.svg';
 import HideOnScroll from './HideOnScroll';
 import DesktopNav from './NavBarDesktop';
 
-
-const user = false;
 
 const useStyles = makeStyles(theme => ({
   icon: {
@@ -87,13 +85,24 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function PrimarySearchAppBar() {
+const MainNav = ({
+  auth: { token, user },
+  fetchUserInfo,
+  getToken,
+  logout,
+  push,
+}) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const [mobileMoreAnchorEl, setMobileMoreAnchorEl] = useState(null);
 
   const isMenuOpen = Boolean(anchorEl);
   const isMobileMenuOpen = Boolean(mobileMoreAnchorEl);
+
+  useEffect(() => {
+    if (!token) getToken();
+    else if (!user) fetchUserInfo();
+  }, [user, token, fetchUserInfo, getToken]);
 
   function handleProfileMenuOpen(event) {
     setAnchorEl(event.currentTarget);
@@ -195,6 +204,8 @@ export default function PrimarySearchAppBar() {
                 menuId={menuId}
                 handleProfileMenuOpen={handleProfileMenuOpen}
                 user={user}
+                logout={logout}
+                push={push}
               />
               <div className={classes.sectionMobile}>
                 <IconButton
@@ -215,4 +226,7 @@ export default function PrimarySearchAppBar() {
       )}
     </HideOnScroll>
   );
-}
+};
+
+
+export default MainNav;
