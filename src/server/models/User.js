@@ -26,10 +26,18 @@ const UserSchema = new Schema({
     type: String,
     required: true,
   },
-  created: { type: Date, default: Date.now },
+  createdAt: { type: Date, default: Date.now },
   description: {
     type: String,
   },
+  gender: {
+    type: String,
+    enum: ['MALE', 'FEMALE', 'OTHER'],
+  },
+  friends: [{
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+  }],
   images: {
     type: [ImageSchema],
     default: [{

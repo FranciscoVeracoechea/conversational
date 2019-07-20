@@ -5,9 +5,8 @@ export const ImageSchema = new Schema({
   kind: {
     type: String,
     enum: ['thumbnail', 'detail', 'profile'],
-    required: true,
   },
-  url: { type: String, required: true },
+  url: { type: String },
 });
 
 export const Image = mongoose.model('Image', ImageSchema);
