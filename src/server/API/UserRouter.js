@@ -1,15 +1,17 @@
 import { Router } from 'express';
+import requireAuthentication from '../middlewares/requireAuthentication';
 import * as UserController from '../controllers/UserCotroller';
 
 
-export default (requireAuthentication) => {
+export default () => {
   // Protected Routes
   const protectedRouter = Router();
   protectedRouter.use(requireAuthentication());
 
-  protectedRouter.get('/token', UserController.userByToken());
   protectedRouter.get('/', UserController.index());
-  protectedRouter.get('/:id', UserController.validate('show'), UserController.show());
+  protectedRouter.get('/userInfo', UserController.userInfo());
+  protectedRouter.get('/show/:username', UserController.validate('show'), UserController.show());
+  protectedRouter.post('/logout', UserController.logout());
 
   // Unprotected Routes
   const openRouter = Router();

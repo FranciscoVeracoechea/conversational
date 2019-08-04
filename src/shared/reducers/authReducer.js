@@ -1,3 +1,4 @@
+import Switch from '../utils/Switch';
 import { actionTypes } from '../actions/authActions';
 
 

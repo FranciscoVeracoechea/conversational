@@ -19,7 +19,7 @@
     "test": "echo \"Error: no test specified\"",
     "watch-client": "webpack --watch --config webpack/webpack.client.js",
     "watch-server": "webpack --watch --config webpack/webpack.server.js",
-    "delete": "rimraf dist/images & rimraf dist/*.css & rimraf dist/*.gz",
+    "delete": "rimraf rimraf dist/*.css & rimraf dist/*.gz",
     "create-secret": "babel-node ./src/server/commands/CreateSecret",
     "create-users": "babel-node ./src/server/commands/CreateUser"
   },
@@ -99,6 +99,7 @@
     "bcrypt-nodejs": "0.0.3",
     "body-parser": "^1.19.0",
     "connected-react-router": "^6.4.0",
+    "cookie-session": "^1.3.3",
     "core-decorators": "^0.20.0",
     "cors": "^2.8.5",
     "dotenv": "^6.2.0",

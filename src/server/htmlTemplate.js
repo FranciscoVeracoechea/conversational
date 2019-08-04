@@ -20,9 +20,9 @@ export default ({
     ${helmet.meta.toString()}
     ${helmet.link.toString()}
     <style id="jss-server-side" type="text/css">${css}</style>
-    <link rel="icon" href="favicon.ico?hash=${hash}">
+    <link rel="icon" href="/statics/favicon.ico?hash=${hash}">
     <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
-    <link rel="stylesheet" type="text/css" href="styles.${hash}.css"/>
+    <link rel="stylesheet" type="text/css" href="/styles.${hash}.css"/>
     <link href="https://fonts.googleapis.com/css?family=Raleway" rel="stylesheet">
   </head>
   <body ${helmet.bodyAttributes.toString()}>
@@ -31,6 +31,6 @@ export default ({
       window.__STATE__ = ${JSON.stringify(state)};
       window.browserEnv = ${JSON.stringify(browserEnv)};
     </script>
-    <script src="bundle.${hash}.js"></script>
+    <script src="/bundle.${hash}.js"></script>
   </body>
 </html>`;

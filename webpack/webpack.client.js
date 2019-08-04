@@ -25,7 +25,7 @@ module.exports = {
   target: 'web',
   output: {
     filename: 'bundle.[hash].js',
-    path: path.resolve(__dirname, '../public'),
+    path: path.resolve(__dirname, '..', '/public'),
     publicPath: '/',
     chunkFilename: '[id].[chunkhash].bundle.js',
   },

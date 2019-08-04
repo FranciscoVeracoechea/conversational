@@ -1,0 +1,5 @@
+@import './global';
+
+.sectionInfo {
+    padding-top: calc(#{$NavHeight} + 1em);
+}

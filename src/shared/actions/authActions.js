@@ -31,9 +31,14 @@ export const getToken = () => ({
 
 export const fetchUserInfo = () => ({ type: actionTypes.fetchUserInfo });
 
-export const saveUserInfo = ({ data: { user } }) => ({
+export const saveUserInfo = user => ({
   type: actionTypes.saveUserInfo,
   payload: { user },
+});
+
+export const saveUserFromServer = req => ({
+  type: actionTypes.saveUserInfo,
+  payload: { user: req.session.user },
 });
 
 export const logout = () => {

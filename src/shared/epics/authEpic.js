@@ -2,7 +2,7 @@
 import root from 'window-or-global';
 import { ofType } from 'redux-observable';
 import {
-  mergeMap, map, filter, catchError,
+  mergeMap, map, filter, catchError, tap,
 } from 'rxjs/operators';
 import { of } from 'rxjs';
 // request helper
@@ -13,14 +13,15 @@ import {
 } from '../actions/authActions';
 
 
+const grantType = 'COOKIE';
+
 export const fetchUserInfoEpic = action$ => action$.pipe(
   ofType(actionTypes.fetchUserInfo),
   map(action => ({ ...action, token: root.localStorage.getItem('token') })),
   filter(action => action.token),
-  mergeMap(action => request({
-    url: '/api/user/token',
+  mergeMap(() => request({
+    url: '/api/user/userInfo',
     method: 'GET',
-    headers: { Authorization: action.token },
   }).pipe(
     map(({ response }) => saveUserInfo(response)),
     catchError(error => of(fetchRegisterRejected(error))),
@@ -32,7 +33,7 @@ export const fetchRegisterEpic = action$ => action$.pipe(
   mergeMap(action => request({
     url: '/api/user/register',
     method: 'POST',
-    body: action.payload,
+    body: { ...action.payload, grantType },
   }).pipe(
     map(({ response }) => saveData(response)),
     catchError(error => of(fetchRegisterRejected(error))),
@@ -44,9 +45,24 @@ export const fetchLoginEpic = action$ => action$.pipe(
   mergeMap(action => request({
     url: '/api/user/login',
     method: 'POST',
-    body: action.payload,
+    body: { ...action.payload, grantType },
   }).pipe(
     map(({ response }) => saveData(response)),
     catchError(error => of(loginRejected(error)))
+  ))
+);
+
+export const fetchLogoutEpic = action$ => action$.pipe(
+  ofType(actionTypes.logout),
+  mergeMap(() => request({
+    url: '/api/user/logout',
+    method: 'POST',
+    headers: {
+      grantType: 'COOKIE',
+    },
+  }).pipe(
+    tap(console.info),
+    catchError(error => of(error.response)),
+    map(() => ({ type: 'null' })),
   ))
 );
